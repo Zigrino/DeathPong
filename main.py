@@ -16,6 +16,7 @@ def main():
     input_status = {}
     swords = pygame.sprite.Group()
     player = sprites.player.Player()
+    player.rect.midleft = (0, HEIGHT/2)
     running = True
     while running:
         clock.tick(globals.FPS)
@@ -32,8 +33,8 @@ def main():
 
         #drawing shit
         screen.fill(globals.SCREEN_COLOR)
+        player.draw(screen)
         swords.draw(screen)
-        player.draw()
 
 
         #Updates shit 
