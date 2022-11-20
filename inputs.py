@@ -1,13 +1,11 @@
 import pygame
 
-def get_inputs():
-    return pygame.key.get_pressed()
-
-def shoot(keys):
-    if keys[pygame.K_SPACE]:
-        return True
-    
-
 def process_inputs():
-    keys = get_inputs()
-    return {"is_shooting": shoot(keys)}
+    key_status = {"is_shooting": False}
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_SPACE]:
+        key_status["is_shooting"] = True
+    else:
+        key_status["is_shooting"] = False
+    return key_status
+

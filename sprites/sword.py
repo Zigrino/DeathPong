@@ -9,6 +9,7 @@ class Sword(pygame.sprite.Sprite):
         #Original image dimensions = 448x448
         self.image = self.image_list[0]
         self.rect = self.image.get_rect()
+        self.rect.midleft = player.rect.midright
         self.surface = pygame.display.get_surface()
     def draw(self, surface):
         surface.blit(self.image, self.rect)
