@@ -2,13 +2,20 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load(r"assets/images/Temporary_Dude.png")
-        # 11000 × 11000
-        self.scale = 0.1
-        self.image = pygame.transform.scale(self.image, (11000*self.scale, 11000*self.scale))
+        self.image = pygame.image.load(r"assets/images/player.png")
+        # 32 × 32
+        self.scale = 3
+        self.image = pygame.transform.scale(self.image, (32*self.scale, 32*self.scale))
         self.rect = self.image.get_rect()
-        self.rect.center = (0, 300)
+        self.rect.midleft = (0, 300)
+        self.speed = 5
     def draw(self, surface):
         surface.blit(self.image, self.rect)
     def update(self):
-        pass
+        keys = pygame.key.get_pressed()
+        movement = [keys[pygame.K_w], keys[pygame.K_s]]
+        if movement[0]:
+            self.rect.center = (self.rect.center[0], self.rect.center[1] - self.speed)
+        elif movement[1]:
+            self.rect.center = (self.rect.center[0], self.rect.center[1] + self.speed)
+            

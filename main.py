@@ -1,11 +1,11 @@
 import pygame
-import globals
+import global_vars
 import sys
 import inputs
 import sprites.player, sprites.sword
 pygame.init()
-WIDTH = globals.window_dimensions[0]
-HEIGHT = globals.window_dimensions[1]
+WIDTH = global_vars.window_dimensions[0]
+HEIGHT = global_vars.window_dimensions[1]
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -18,7 +18,7 @@ def main():
     player = sprites.player.Player()
     running = True
     while running:
-        clock.tick(globals.FPS)
+        clock.tick(global_vars.FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -31,12 +31,14 @@ def main():
             swords.add(sprites.sword.Sword(player))
 
         #drawing shit
-        screen.fill(globals.SCREEN_COLOR)
+        screen.fill(global_vars.SCREEN_COLOR)
         player.draw(screen)
         swords.draw(screen)
 
 
         #Updates shit 
         pygame.display.update()
+        player.update()
+        swords.update()
 if  __name__ == "__main__":
     main()
