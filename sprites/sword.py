@@ -12,9 +12,14 @@ class Sword(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = player.rect.midright
         self.surface = pygame.display.get_surface()
+        self.speed = 5
+        self.flying = True
     def draw(self, surface):
         surface.blit(self.image, self.rect)
     def update(self):
-        pass
+        if self.rect.center[0] <= 800:
+            self.rect.center =  (self.rect.center[0] + self.speed, self.rect.center[1])
+        else:
+            self.flying = False
         
 

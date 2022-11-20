@@ -26,9 +26,19 @@ def main():
         #inputs and shit
         input_status = inputs.process_inputs()
 
-        if(input_status["is_shooting"]):
+        if(input_status["is_shooting"] and player.can_shoot):
             print("shooting a sword")
             swords.add(sprites.sword.Sword(player))
+            player.can_shoot = False
+            player.is_shooting = True
+        swordcount = 0
+        for sword in swords:
+            if sword.flying:
+                swordcount += 1
+        if swordcount > 0:
+            player.can_shoot = False
+        else:
+            player.can_shoot = True
 
         #drawing shit
         screen.fill(global_vars.SCREEN_COLOR)
