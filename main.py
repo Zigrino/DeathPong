@@ -27,10 +27,13 @@ def main():
         input_status = inputs.process_inputs()
 
         if(input_status["is_shooting"]):
+            print("shooting a sword")
             swords.add(sprites.sword.Sword(player))
 
         #drawing shit
         screen.fill(globals.SCREEN_COLOR)
+        swords.draw(screen)
+        player.draw()
 
 
         #Updates shit 
