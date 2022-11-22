@@ -10,7 +10,6 @@ class Player(pygame.sprite.Sprite):
         self.rect.midleft = (0, 300)
         self.speed = 5
         self.is_shooting = False
-        self.can_shoot = True
     def draw(self, surface):
         surface.blit(self.image, self.rect)
     def update(self):

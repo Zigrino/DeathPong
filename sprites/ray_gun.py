@@ -34,3 +34,4 @@ class Ray(pygame.sprite.Sprite):
            self.rect.center =  (self.rect.center[0] + self.speed, self.rect.center[1])
        else:
            self.flying = False
+           self.kill()
