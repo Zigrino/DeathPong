@@ -35,7 +35,10 @@ class Ray(pygame.sprite.Sprite):
        #dimensions = 148x64
        self.image = pygame.transform.scale(self.image, (148*self.scale, 32*self.scale))
        self.rect = self.image.get_rect()
-       self.rect.center = (player.rect.midright[0]+10, player.rect.midright[1])
+       if self.pn == 0:
+           self.rect.center = (player.rect.midright[0]+10, player.rect.midright[1])
+       else:
+           self.rect.center = (player.rect.midleft[0] - 10, player.rect.midleft[1])
        self.surface = pygame.display.get_surface()
        self.speed = 25
        self.flying = True

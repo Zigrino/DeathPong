@@ -35,11 +35,62 @@ def main():
     weapon = "swords"
     weapon1 = "swords"
     def weaponHandler(w, p): #decides if player can shoot
-        pass
+        if p == player:
+            if w == "swords":
+                sword_count = 0
+                for sword in weapons_shot["swords"]:
+                    if sword.flying:
+                        sword_count += 1
+                if sword_count > 0:
+                    p.can_shoot = False
+                else:
+                    p.can_shoot = True
+            if w == "raygun":
+                raycount = 0
+                for ray in weapons_shot["raygun"]:
+                    if ray.flying:
+                        raycount += 1
+                if raycount < 7:
+                    p.can_shoot = True
+                else:
+                    p.can_shoot = False
+
+        if p == player1:
+            if w == "swords":
+                sword_count = 0
+                for sword in weapons1_shot["swords"]:
+                    if sword.flying:
+                        sword_count += 1
+                if sword_count > 0:
+                    p.can_shoot = False
+                else:
+                    p.can_shoot = True
+            if w == "raygun":
+                raycount = 0
+                for ray in weapons1_shot["raygun"]:
+                    if ray.flying:
+                        raycount += 1
+                if raycount < 7:
+                    p.can_shoot = True
+                else:
+                    p.can_shoot = False
+
 
     def shootWeapons(p): #shoots the player
-        pass
-    def update_weapons(w, p):
+        if p == player:
+            if input_status["is_shooting"] and p.can_shoot:
+                if weapon == "swords":
+                    weapons_shot["swords"].add(sprites.sword.Sword(player, 0))
+                elif weapon == "raygun":
+                    weapons_shot["raygun"].add(Ray(player, 0))
+        if p == player1:
+            if input_status1["is_shooting"] and p.can_shoot:
+                if weapon1 == "swords":
+                    weapons1_shot["swords"].add(sprites.sword.Sword(player1, 1))
+                elif weapon1 == "raygun":
+                    weapons1_shot["raygun"].add(Ray(player1, 1))
+
+    def update_weapons(p):
         pass
     while running:
         clock.tick(global_vars.FPS)
@@ -79,7 +130,7 @@ def main():
         player.update()
         player1.update()
         weapons_shot[weapon].update()
-        weapons1_shot[weapon].update()
+        weapons1_shot[weapon1].update()
         weapons_held[weapon].update()
         weapons1_held[weapon1].update()
 

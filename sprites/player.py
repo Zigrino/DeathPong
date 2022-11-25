@@ -7,6 +7,7 @@ class Player(pygame.sprite.Sprite):
         self.scale = 3
         self.image = pygame.transform.scale(self.image, (32*self.scale, 32*self.scale))
         self.rect = self.image.get_rect()
+        self.pn = playnum
         if playnum == 1:
             self.rect.midright = startpos
             self.image = pygame.transform.flip(self.image, True, False)
@@ -18,7 +19,10 @@ class Player(pygame.sprite.Sprite):
         surface.blit(self.image, self.rect)
     def update(self):
         keys = pygame.key.get_pressed()
-        movement = [keys[pygame.K_w], keys[pygame.K_s]]
+        if self.pn == 0:
+            movement = [keys[pygame.K_w], keys[pygame.K_s]]
+        else:
+            movement = [keys[pygame.K_UP], keys[pygame.K_DOWN]]
         if movement[0] and self.rect.topleft[1] - self.speed > 0:
             self.rect.center = (self.rect.center[0], self.rect.center[1] - self.speed)
         elif movement[1] and self.rect.bottomleft[1] - self.speed < 600:
