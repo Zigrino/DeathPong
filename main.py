@@ -15,34 +15,32 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 
 def main():
-    def weaponHandler(weapon):
-        if weapon=="sword":
-            #Managing swords
-            swordcount = 0
-            for sword in swords:
-                if sword.flying:
-                    swordcount += 1
-            if swordcount > 0:
-                player.can_shoot = False
-            else:
-                player.can_shoot = True
-        elif weapon=="raygun":
-            raycount = 0
-            for ray in rays:
-                if ray.flying:
-                    raycount += 1
-            if raycount < 7:
-                player.can_shoot = True
-            else:
-                player.can_shoot = False
 
+    player = sprites.player.Player((0, HEIGHT/2), 0)
+    player1 = sprites.player.Player((WIDTH, HEIGHT/2), 1)
     input_status = {}
-    swords = pygame.sprite.Group()
-    rays = pygame.sprite.Group()
-    player = sprites.player.Player()
-    ray_gun = Ray_Gun(player)
+    weapons_shot = {}
+    weapons_shot["swords"] = pygame.sprite.Group()
+    weapons_shot["raygun"] = pygame.sprite.Group()
+    weapons1_shot = {}
+    weapons1_shot["swords"] = pygame.sprite.Group()
+    weapons1_shot["raygun"] = pygame.sprite.Group()
+    weapons_held = {}
+    weapons_held["raygun"] = Ray_Gun(player, 0)
+    weapons_held["swords"] = sprites.sword.Sword_Held(player, 0)
+    weapons1_held = {}
+    weapons1_held["raygun"] = Ray_Gun(player1, 1)
+    weapons1_held["swords"] = sprites.sword.Sword_Held(player1, 1)
     running = True
-    weapon = "sword"
+    weapon = "swords"
+    weapon1 = "swords"
+    def weaponHandler(w, p): #decides if player can shoot
+        pass
+
+    def shootWeapons(p): #shoots the player
+        pass
+    def update_weapons(w, p):
+        pass
     while running:
         clock.tick(global_vars.FPS)
         for event in pygame.event.get():
@@ -51,31 +49,39 @@ def main():
                 sys.exit()
         #inputs and shit
         input_status = inputs.process_inputs()
-        if input_status["ray_gun"] and weapon != "raygun":
+        input_status1 = inputs.process_inputs1()
+        
+        if input_status["ray_gun"] == True and weapon != "raygun":
             player.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
             weapon = "raygun"
+        if input_status1["ray_gun"] == True and weapon1 != "raygun":
+            player1.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
+            weapon1 = "raygun"
         #HELL YES SHOOTING THINGS IS COOL GUNS GO BOOM AMERICA WOOOOOOOOOO
-        weaponHandler(weapon)
-        if(input_status["is_shooting"] and player.can_shoot and weapon == "sword"):
-            swords.add(sprites.sword.Sword(player))
-            player.can_shoot = False
-        elif(input_status["is_shooting"] and player.can_shoot and weapon == "raygun"):
-            rays.add(Ray(player))
+        weaponHandler(weapon, player)
+        weaponHandler(weapon1, player1)
+        shootWeapons(player)
+        shootWeapons(player1)
+
 
         #drawing shit
         screen.fill(global_vars.SCREEN_COLOR)
         player.draw(screen)
-        swords.draw(screen)
-        rays.draw(screen)
-        if weapon == "raygun":
-            ray_gun.draw(screen, player)
+        player1.draw(screen)
+        weapons_shot[weapon].draw(screen)
+        weapons1_shot[weapon1].draw(screen)
+        weapons_held[weapon].draw(screen)
+        weapons1_held[weapon1].draw(screen)
 
 
         #Updates shit 
         pygame.display.update()
         player.update()
-        swords.update()
-        rays.update()
+        player1.update()
+        weapons_shot[weapon].update()
+        weapons1_shot[weapon].update()
+        weapons_held[weapon].update()
+        weapons1_held[weapon1].update()
 
 
 

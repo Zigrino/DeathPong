@@ -1,13 +1,17 @@
 import pygame
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, startpos, playnum):
         super().__init__()
         self.image = pygame.image.load(r"assets/images/player.png")
         # 32 × 32
         self.scale = 3
         self.image = pygame.transform.scale(self.image, (32*self.scale, 32*self.scale))
         self.rect = self.image.get_rect()
-        self.rect.midleft = (0, 300)
+        if playnum == 1:
+            self.rect.midright = startpos
+            self.image = pygame.transform.flip(self.image, True, False)
+        else:
+            self.rect.midleft = startpos
         self.speed = 5
         self.is_shooting = False
     def draw(self, surface):
