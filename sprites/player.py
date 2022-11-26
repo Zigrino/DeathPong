@@ -3,7 +3,10 @@ import time, random
 class Player(pygame.sprite.Sprite):
     def __init__(self, startpos, playnum):
         super().__init__()
-        self.image = pygame.image.load(r"assets/images/player.png")
+        if playnum == 0:
+            self.image = pygame.image.load(r"assets/images/player.png")
+        else:
+            self.image = pygame.image.load(r"assets/images/player.png")
         # 32 × 32
         self.scale = 3
         self.image = pygame.transform.scale(self.image, (32*self.scale, 32*self.scale))

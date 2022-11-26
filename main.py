@@ -2,8 +2,9 @@ import pygame
 import global_vars
 import sys
 import inputs
-import sprites.player, sprites.sword
+import sprites.player, sprites.sword, sprites.gun
 from sprites.ray_gun import Ray_Gun, Ray
+import random
 
 pygame.init()
 WIDTH = global_vars.window_dimensions[0]
@@ -17,22 +18,26 @@ def main():
     player = sprites.player.Player((0, HEIGHT/2), 0)
     player1 = sprites.player.Player((WIDTH, HEIGHT/2), 1)
     input_status = {}
-    weapon_list = ["swords", "raygun"]
+    weapon_list = ["swords", "raygun", "gun"]
     weapons_shot = {}
     weapons_shot["swords"] = pygame.sprite.Group()
     weapons_shot["raygun"] = pygame.sprite.Group()
+    weapons_shot["gun"] = pygame.sprite.Group()
     weapons1_shot = {}
     weapons1_shot["swords"] = pygame.sprite.Group()
     weapons1_shot["raygun"] = pygame.sprite.Group()
+    weapons1_shot["gun"] = pygame.sprite.Group()
     weapons_held = {}
     weapons_held["raygun"] = Ray_Gun(player, 0)
     weapons_held["swords"] = sprites.sword.Sword_Held(player, 0)
+    weapons_held["gun"] = sprites.gun.Gun(player, 0)
     weapons1_held = {}
     weapons1_held["raygun"] = Ray_Gun(player1, 1)
     weapons1_held["swords"] = sprites.sword.Sword_Held(player1, 1)
+    weapons1_held["gun"] = sprites.gun.Gun(player1, 1)
     running = True
-    weapon = "swords"
-    weapon1 = "swords"
+    weapon = random.choice(weapon_list)
+    weapon1 = random.choice(weapon_list)
     time_since_shot = 0
     time_since_shot1 = 0
     def weaponHandler(w, p): #decides if player can shoot
@@ -123,11 +128,16 @@ def main():
         '''
         if player.swap_weapon:
             player.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
-            weapon = weapon_list[(weapon_list.index(weapon)+1)%len(weapon_list)]
+            #weapon = weapon_list[(weapon_list.index(weapon)+1)%len(weapon_list)]
+            new_list = weapon_list.copy()
+            new_list.remove(weapon)
+            weapon = random.choice(new_list)
             player.swap_weapon = False
         if player1.swap_weapon:
             player1.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
-            weapon1 = weapon_list[(weapon_list.index(weapon1)+1)%len(weapon_list)]
+            new_list = weapon_list.copy()
+            new_list.remove(weapon1)
+            weapon1 = random.choice(new_list)
             player1.swap_weapon = False
 
 
