@@ -140,7 +140,6 @@ def main():
             weapons_shot[w].update()
         for w in weapons_shot:
             weapons1_shot[w].update()
-        print(weapon)
         weapons_held[weapon].update()
         weapons1_held[weapon1].update()
 
