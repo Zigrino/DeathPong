@@ -12,14 +12,17 @@ class Gun(pygame.sprite.Sprite):
             self.image = pygame.transform.flip(self.image, True, False)
         self.rect = self.image.get_rect()
         if self.pn == 0:
-            self.rect.center = player.rect.midright
+            self.rect.center = (self.player.rect.midright[0] + 5, self.player.rect.midright[1])
         else:
-            self.rect.center = player.rect.midleft
+            self.rect.center = (self.player.rect.midleft[0] - 5, self.player.rect.midleft[1])
         self.surface = pygame.display.get_surface()
     def draw(self, surface):
         surface.blit(self.image, self.rect)
     def update(self):
-        self.rect.center = self.player.rect.midright
+        if self.pn == 0:
+            self.rect.center = (self.player.rect.midright[0] + 5, self.player.rect.midright[1])
+        else:
+            self.rect.center = (self.player.rect.midleft[0] - 5, self.player.rect.midleft[1])
 
 class Bullet(pygame.sprite.Sprite):
    def __init__(self, player, pn):

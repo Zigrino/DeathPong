@@ -23,6 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.time_to_swap = random.randint(3, 8)
         self.time_since_swapped = 0
         self.last_time_swapped = time.time()
+        self.can_shoot = False
     def draw(self, surface):
         surface.blit(self.image, self.rect)
     def update(self):
