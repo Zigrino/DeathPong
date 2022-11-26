@@ -124,8 +124,10 @@ def main():
         screen.fill(global_vars.SCREEN_COLOR)
         player.draw(screen)
         player1.draw(screen)
-        weapons_shot[weapon].draw(screen)
-        weapons1_shot[weapon1].draw(screen)
+        for w in weapons_shot:
+            weapons_shot[w].draw(screen)
+        for w in weapons_shot:
+            weapons1_shot[w].draw(screen)
         weapons_held[weapon].draw(screen)
         weapons1_held[weapon1].draw(screen)
 
@@ -134,8 +136,11 @@ def main():
         pygame.display.update()
         player.update()
         player1.update()
-        weapons_shot[weapon].update()
-        weapons1_shot[weapon1].update()
+        for w in weapons_shot:
+            weapons_shot[w].update()
+        for w in weapons_shot:
+            weapons1_shot[w].update()
+        print(weapon)
         weapons_held[weapon].update()
         weapons1_held[weapon1].update()
 
