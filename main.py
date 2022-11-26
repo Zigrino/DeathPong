@@ -113,13 +113,24 @@ def main():
                 if event.key == pygame.K_a:
                     input_status["weapon_swap"] = True
         #inputs and shit
-        
+        ''' 
         if input_status["weapon_swap"] == True:
             player.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
             weapon = weapon_list[(weapon_list.index(weapon)+1)%len(weapon_list)]
         if input_status1["weapon_swap"] == True:
             player1.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
             weapon1 = weapon_list[(weapon_list.index(weapon1)+1)%len(weapon_list)]
+        '''
+        if player.swap_weapon:
+            player.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
+            weapon = weapon_list[(weapon_list.index(weapon)+1)%len(weapon_list)]
+            player.swap_weapon = False
+        if player1.swap_weapon:
+            player1.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
+            weapon1 = weapon_list[(weapon_list.index(weapon1)+1)%len(weapon_list)]
+            player1.swap_weapon = False
+
+
         #HELL YES SHOOTING THINGS IS COOL GUNS GO BOOM AMERICA WOOOOOOOOOO
         weaponHandler(weapon, player)
         weaponHandler(weapon1, player1)

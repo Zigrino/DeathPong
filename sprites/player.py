@@ -1,4 +1,5 @@
 import pygame
+import time, random
 class Player(pygame.sprite.Sprite):
     def __init__(self, startpos, playnum):
         super().__init__()
@@ -15,10 +16,22 @@ class Player(pygame.sprite.Sprite):
             self.rect.midleft = startpos
         self.speed = 5
         self.is_shooting = False
+        self.swap_weapon = False
+        self.time_to_swap = random.randint(3, 8)
+        self.time_since_swapped = 0
+        self.last_time_swapped = time.time()
     def draw(self, surface):
         surface.blit(self.image, self.rect)
     def update(self):
         keys = pygame.key.get_pressed()
+        self.time_since_swapped = time.time()-self.last_time_swapped
+        if self.time_since_swapped >= self.time_to_swap:
+            self.swap_weapon = True
+            self.time_to_swap = random.randint(3, 8)
+            self.last_time_swapped = time.time()
+            self.time_since_swapped = 0
+        
+        
         if self.pn == 0:
             movement = [keys[pygame.K_w], keys[pygame.K_s]]
         else:
