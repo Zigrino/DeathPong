@@ -11,11 +11,9 @@ HEIGHT = global_vars.window_dimensions[1]
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-#Sprites and stuff
-
-
 def main():
-
+    global time_since_shot, time_since_shot1
+    #Sprites and stuff
     player = sprites.player.Player((0, HEIGHT/2), 0)
     player1 = sprites.player.Player((WIDTH, HEIGHT/2), 1)
     input_status = {}
@@ -34,14 +32,16 @@ def main():
     running = True
     weapon = "swords"
     weapon1 = "swords"
+    time_since_shot = 0
+    time_since_shot1 = 0
     def weaponHandler(w, p): #decides if player can shoot
         if p == player:
             if w == "swords":
-                sword_count = 0
-                for sword in weapons_shot["swords"]:
-                    if sword.flying:
-                        sword_count += 1
-                if sword_count > 0:
+                # sword_count = 0
+                # for sword in weapons_shot["swords"]:
+                #     if sword.flying:
+                #         sword_count += 1
+                if time_since_shot < 35:
                     p.can_shoot = False
                 else:
                     p.can_shoot = True
@@ -57,11 +57,11 @@ def main():
 
         if p == player1:
             if w == "swords":
-                sword_count = 0
-                for sword in weapons1_shot["swords"]:
-                    if sword.flying:
-                        sword_count += 1
-                if sword_count > 0:
+                # sword_count = 0
+                # for sword in weapons_shot["swords"]:
+                #     if sword.flying:
+                #         sword_count += 1
+                if time_since_shot1 < 35:
                     p.can_shoot = False
                 else:
                     p.can_shoot = True
@@ -77,23 +77,29 @@ def main():
 
 
     def shootWeapons(p): #shoots the player
+        global time_since_shot, time_since_shot1
         if p == player:
             if input_status["is_shooting"] and p.can_shoot:
                 if weapon == "swords":
+                    time_since_shot = 0
                     weapons_shot["swords"].add(sprites.sword.Sword(player, 0))
                 elif weapon == "raygun":
                     weapons_shot["raygun"].add(Ray(player, 0))
         if p == player1:
             if input_status1["is_shooting"] and p.can_shoot:
                 if weapon1 == "swords":
+                    time_since_shot1 = 0
                     weapons1_shot["swords"].add(sprites.sword.Sword(player1, 1))
                 elif weapon1 == "raygun":
                     weapons1_shot["raygun"].add(Ray(player1, 1))
 
     def update_weapons(p):
         pass
+
     while running:
         clock.tick(global_vars.FPS)
+        time_since_shot1 += 1
+        time_since_shot += 1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -113,7 +119,6 @@ def main():
         weaponHandler(weapon1, player1)
         shootWeapons(player)
         shootWeapons(player1)
-
 
         #drawing shit
         screen.fill(global_vars.SCREEN_COLOR)
