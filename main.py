@@ -17,6 +17,7 @@ def main():
     player = sprites.player.Player((0, HEIGHT/2), 0)
     player1 = sprites.player.Player((WIDTH, HEIGHT/2), 1)
     input_status = {}
+    weapon_list = ["swords", "raygun"]
     weapons_shot = {}
     weapons_shot["swords"] = pygame.sprite.Group()
     weapons_shot["raygun"] = pygame.sprite.Group()
@@ -100,20 +101,25 @@ def main():
         clock.tick(global_vars.FPS)
         time_since_shot1 += 1
         time_since_shot += 1
+        input_status = inputs.process_inputs()
+        input_status1 = inputs.process_inputs1()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    input_status1["weapon_swap"] = True
+                if event.key == pygame.K_a:
+                    input_status["weapon_swap"] = True
         #inputs and shit
-        input_status = inputs.process_inputs()
-        input_status1 = inputs.process_inputs1()
         
-        if input_status["ray_gun"] == True and weapon != "raygun":
+        if input_status["weapon_swap"] == True:
             player.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
-            weapon = "raygun"
-        if input_status1["ray_gun"] == True and weapon1 != "raygun":
+            weapon = weapon_list[(weapon_list.index(weapon)+1)%len(weapon_list)]
+        if input_status1["weapon_swap"] == True:
             player1.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
-            weapon1 = "raygun"
+            weapon1 = weapon_list[(weapon_list.index(weapon1)+1)%len(weapon_list)]
         #HELL YES SHOOTING THINGS IS COOL GUNS GO BOOM AMERICA WOOOOOOOOOO
         weaponHandler(weapon, player)
         weaponHandler(weapon1, player1)
