@@ -115,8 +115,39 @@ def main():
                     time_since_shot1 = 0
                     weapons1_shot["gun"].add(sprites.gun.Bullet(player1, 1))
 
-    def update_weapons(p):
-        pass
+    def collisions():
+        for wep in weapons_shot:
+            for w in weapons_shot[wep]:
+                if pygame.sprite.collide_mask(player1, w):
+                    if wep == "swords" and w.can_kill:
+                        w.image = w.image_list[1]
+                        w.can_kill = False
+                        player1.update_health(1)
+                        print("Player 1 has been hit, health = ", player1.health)
+                    elif wep == "raygun":
+                        w.kill()
+                        player1.update_health(1)
+                        print("Player 1 has been hit, health = ", player1.health)
+                    elif wep == "gun":
+                        player1.update_health(3)
+                        print("Player 1 has been hit, health = ", player1.health)
+                        w.kill()
+        for wep in weapons1_shot:
+            for w in weapons1_shot[wep]:
+                if pygame.sprite.collide_mask(player, w):
+                    if wep == "swords" and w.can_kill:
+                        w.image = w.image_list[1]
+                        w.can_kill = False
+                        player.update_health(1)
+                        print("Player 0 has been hit, health = ", player.health)
+                    elif wep == "raygun":
+                        w.kill()
+                        player.update_health(1)
+                        print("Player 0 has been hit, health = ", player.health)
+                    elif wep == "gun":
+                        player.update_health(3)
+                        print("Player 0 has been hit, health = ", player.health)
+                        w.kill()
 
     while running:
         clock.tick(global_vars.FPS)
@@ -150,28 +181,34 @@ def main():
         shootWeapons(player)
         shootWeapons(player1)
 
+        collisions()
+
         #drawing shit
         screen.fill(global_vars.SCREEN_COLOR)
-        player.draw(screen)
-        player1.draw(screen)
+        if player.alive:
+            player.draw(screen)
+            weapons_held[weapon].draw(screen)
+        if player1.alive:
+            player1.draw(screen)
+            weapons1_held[weapon1].draw(screen)
         for w in weapons_shot:
             weapons_shot[w].draw(screen)
         for w in weapons_shot:
             weapons1_shot[w].draw(screen)
-        weapons_held[weapon].draw(screen)
-        weapons1_held[weapon1].draw(screen)
 
 
         #Updates shit 
         pygame.display.update()
-        player.update()
-        player1.update()
+        if player.alive:
+            player.update()
+            weapons_held[weapon].update()
+        if player1.alive:
+            player1.update()
+            weapons1_held[weapon1].update()
         for w in weapons_shot:
             weapons_shot[w].update()
         for w in weapons_shot:
             weapons1_shot[w].update()
-        weapons_held[weapon].update()
-        weapons1_held[weapon1].update()
 
 
 

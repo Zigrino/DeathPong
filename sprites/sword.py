@@ -10,8 +10,10 @@ class Sword(pygame.sprite.Sprite):
         #Original image dimensions = 448x448
         self.image = self.image_list[0]
         self.image = pygame.transform.scale(self.image, (448*self.scale, 448*self.scale))
+        self.image_list[1] = pygame.transform.scale(self.image_list[1], (448*self.scale, 448*self.scale))
         if pn == 1:
             self.image = pygame.transform.flip(self.image, True, False)
+            self.image_list[1] = pygame.transform.flip(self.image_list[1], True, False)
             self.rect = self.image.get_rect()
             self.rect.midright = self.player.rect.midleft
         else:
@@ -20,6 +22,7 @@ class Sword(pygame.sprite.Sprite):
         self.surface = pygame.display.get_surface()
         self.speed = 5
         self.flying = True
+        self.can_kill = True
     def draw(self, surface):
         surface.blit(self.image, self.rect)
     def update(self):

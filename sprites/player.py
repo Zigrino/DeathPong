@@ -24,6 +24,12 @@ class Player(pygame.sprite.Sprite):
         self.time_since_swapped = 0
         self.last_time_swapped = time.time()
         self.can_shoot = False
+        self.health = 10
+        self.alive = True
+    def update_health(self, num):
+        self.health -= num
+        if self.health <= 0:
+            self.alive = False
     def draw(self, surface):
         surface.blit(self.image, self.rect)
     def update(self):
