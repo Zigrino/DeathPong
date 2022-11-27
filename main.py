@@ -126,14 +126,14 @@ def main():
                     if wep == "swords" and w.can_kill:
                         w.image = w.image_list[1]
                         w.can_kill = False
-                        player1.update_health(1)
+                        player1.update_health(global_vars.sword_damage)
                         print("Player 1 has been hit, health = ", player1.health)
                     elif wep == "raygun":
                         w.kill()
-                        player1.update_health(1)
+                        player1.update_health(global_vars.raygun_damage)
                         print("Player 1 has been hit, health = ", player1.health)
                     elif wep == "gun":
-                        player1.update_health(3)
+                        player1.update_health(global_vars.gun_damage)
                         print("Player 1 has been hit, health = ", player1.health)
                         w.kill()
         for wep in weapons1_shot:
@@ -142,14 +142,14 @@ def main():
                     if wep == "swords" and w.can_kill:
                         w.image = w.image_list[1]
                         w.can_kill = False
-                        player.update_health(1)
+                        player.update_health(global_vars.sword_damage)
                         print("Player 0 has been hit, health = ", player.health)
                     elif wep == "raygun":
                         w.kill()
-                        player.update_health(1)
+                        player.update_health(global_vars.raygun_damage)
                         print("Player 0 has been hit, health = ", player.health)
                     elif wep == "gun":
-                        player.update_health(3)
+                        player.update_health(global_vars.gun_damage)
                         print("Player 0 has been hit, health = ", player.health)
                         w.kill()
 
@@ -164,7 +164,7 @@ def main():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_ESCAPE:
                     main()
         #inputs and shit
         if player.swap_weapon:
