@@ -24,6 +24,31 @@ class Gun(pygame.sprite.Sprite):
         else:
             self.rect.center = (self.player.rect.midleft[0] - 5, self.player.rect.midleft[1])
 
+class Machine_Gun(pygame.sprite.Sprite):
+    def __init__(self, player, pn):
+        super().__init__()
+        self.pn = pn
+        self.player = player;
+        self.image = pygame.image.load(r"assets/images/Machine_Gun.png")
+        self.scale = 0.09
+        #948x391
+        self.image = pygame.transform.scale(self.image, (948*self.scale, 391*self.scale))
+        if self.pn == 1:
+            self.image = pygame.transform.flip(self.image, True, False)
+        self.rect = self.image.get_rect()
+        if self.pn == 0:
+            self.rect.center = (self.player.rect.midright[0] + 5, self.player.rect.midright[1])
+        else:
+            self.rect.center = (self.player.rect.midleft[0] - 5, self.player.rect.midleft[1])
+        self.surface = pygame.display.get_surface()
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
+    def update(self):
+        if self.pn == 0:
+            self.rect.center = (self.player.rect.midright[0] + 5, self.player.rect.midright[1])
+        else:
+            self.rect.center = (self.player.rect.midleft[0] - 5, self.player.rect.midleft[1])
+
 class Bullet(pygame.sprite.Sprite):
    def __init__(self, player, pn):
        super().__init__()

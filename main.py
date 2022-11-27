@@ -18,23 +18,27 @@ def main():
     player = sprites.player.Player((0, HEIGHT/2), 0)
     player1 = sprites.player.Player((WIDTH, HEIGHT/2), 1)
     input_status = {}
-    weapon_list = ["swords", "raygun", "gun"]
+    weapon_list = ["swords", "raygun", "gun", "machine_gun"]
     weapons_shot = {}
     weapons_shot["swords"] = pygame.sprite.Group()
     weapons_shot["raygun"] = pygame.sprite.Group()
     weapons_shot["gun"] = pygame.sprite.Group()
+    weapons_shot["machine_gun"] = pygame.sprite.Group()
     weapons1_shot = {}
     weapons1_shot["swords"] = pygame.sprite.Group()
     weapons1_shot["raygun"] = pygame.sprite.Group()
     weapons1_shot["gun"] = pygame.sprite.Group()
+    weapons1_shot["machine_gun"] = pygame.sprite.Group()
     weapons_held = {}
     weapons_held["raygun"] = Ray_Gun(player, 0)
     weapons_held["swords"] = sprites.sword.Sword_Held(player, 0)
     weapons_held["gun"] = sprites.gun.Gun(player, 0)
+    weapons_held["machine_gun"] = sprites.gun.Machine_Gun(player, 0)
     weapons1_held = {}
     weapons1_held["raygun"] = Ray_Gun(player1, 1)
     weapons1_held["swords"] = sprites.sword.Sword_Held(player1, 1)
     weapons1_held["gun"] = sprites.gun.Gun(player1, 1)
+    weapons1_held["machine_gun"] = sprites.gun.Machine_Gun(player1, 1)
     running = True
     weapon = random.choice(weapon_list)
     weapon1 = random.choice(weapon_list)
@@ -67,6 +71,15 @@ def main():
                     p.can_shoot = False
                 else:
                     p.can_shoot = True
+            elif w == "machine_gun":
+                bullet_count = 0
+                for bul in weapons_shot["machine_gun"]:
+                    if bul.flying:
+                        bullet_count += 1
+                if time_since_shot < 10 or bullet_count > 15:
+                    p.can_shoot = False
+                else:
+                    p.can_shoot = True
         if not player.alive:
             player.can_shoot = False
 
@@ -94,6 +107,15 @@ def main():
                     p.can_shoot = False
                 else:
                     p.can_shoot = True
+            elif w == "machine_gun":
+                bullet_count = 0
+                for bul in weapons1_shot["machine_gun"]:
+                    if bul.flying:
+                        bullet_count += 1
+                if time_since_shot1 < 10 or bullet_count > 7:
+                    p.can_shoot = False
+                else:
+                    p.can_shoot = True
         if not player1.alive:
             player1.can_shoot = False
 
@@ -110,6 +132,9 @@ def main():
                 elif weapon == "gun":
                     time_since_shot = 0
                     weapons_shot["gun"].add(sprites.gun.Bullet(player, 0))
+                elif weapon == "machine_gun":
+                    time_since_shot = 0
+                    weapons_shot["machine_gun"].add(sprites.gun.Bullet(player, 0))
         if p == player1:
             if input_status1["is_shooting"] and p.can_shoot:
                 if weapon1 == "swords":
@@ -120,6 +145,9 @@ def main():
                 elif weapon1 == "gun":
                     time_since_shot1 = 0
                     weapons1_shot["gun"].add(sprites.gun.Bullet(player1, 1))
+                elif weapon1 == "machine_gun":
+                    time_since_shot1 = 0
+                    weapons1_shot["machine_gun"].add(sprites.gun.Bullet(player1, 1))
 
     def collisions():
         for wep in weapons_shot:
@@ -138,6 +166,9 @@ def main():
                         player1.update_health(global_vars.gun_damage)
                         # print("Player 1 has been hit, health = ", player1.health)
                         w.kill()
+                    elif wep == "machine_gun":
+                        player1.update_health(global_vars.machine_gun_damage) 
+                        w.kill()
         for wep in weapons1_shot:
             for w in weapons1_shot[wep]:
                 if pygame.sprite.collide_mask(player, w):
@@ -153,6 +184,9 @@ def main():
                     elif wep == "gun":
                         player.update_health(global_vars.gun_damage)
                         # print("Player 0 has been hit, health = ", player.health)
+                        w.kill()
+                    elif wep == "machine_gun":
+                        player.update_health(global_vars.machine_gun_damage) 
                         w.kill()
 
     while running:
