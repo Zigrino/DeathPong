@@ -65,6 +65,8 @@ def main():
                     p.can_shoot = False
                 else:
                     p.can_shoot = True
+        if not player.alive:
+            player.can_shoot = False
 
         if p == player1:
             if w == "swords":
@@ -90,6 +92,8 @@ def main():
                     p.can_shoot = False
                 else:
                     p.can_shoot = True
+        if not player1.alive:
+            player1.can_shoot = False
 
 
     def shootWeapons(p): #shoots the player
@@ -159,6 +163,9 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    main()
         #inputs and shit
         if player.swap_weapon:
             player.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass

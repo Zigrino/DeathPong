@@ -24,7 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.time_since_swapped = 0
         self.last_time_swapped = time.time()
         self.can_shoot = False
-        self.health = 10
+        self.health = 20
         self.alive = True
     def update_health(self, num):
         self.health -= num
