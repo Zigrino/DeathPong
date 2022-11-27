@@ -2,7 +2,7 @@ import pygame
 import global_vars
 import sys
 import inputs
-import sprites.player, sprites.sword, sprites.gun
+import sprites.player, sprites.sword, sprites.gun, sprites.health_bar
 from sprites.ray_gun import Ray_Gun, Ray
 import random
 
@@ -40,6 +40,8 @@ def main():
     weapon1 = random.choice(weapon_list)
     time_since_shot = 0
     time_since_shot1 = 0
+    health_bar = sprites.health_bar.Health_Bar(player, 0)
+    health_bar1 = sprites.health_bar.Health_Bar(player1, 1)
     def weaponHandler(w, p): #decides if player can shoot
         if p == player:
             if w == "swords":
@@ -127,14 +129,14 @@ def main():
                         w.image = w.image_list[1]
                         w.can_kill = False
                         player1.update_health(global_vars.sword_damage)
-                        print("Player 1 has been hit, health = ", player1.health)
+                        # print("Player 1 has been hit, health = ", player1.health)
                     elif wep == "raygun":
                         w.kill()
                         player1.update_health(global_vars.raygun_damage)
-                        print("Player 1 has been hit, health = ", player1.health)
+                        # print("Player 1 has been hit, health = ", player1.health)
                     elif wep == "gun":
                         player1.update_health(global_vars.gun_damage)
-                        print("Player 1 has been hit, health = ", player1.health)
+                        # print("Player 1 has been hit, health = ", player1.health)
                         w.kill()
         for wep in weapons1_shot:
             for w in weapons1_shot[wep]:
@@ -143,14 +145,14 @@ def main():
                         w.image = w.image_list[1]
                         w.can_kill = False
                         player.update_health(global_vars.sword_damage)
-                        print("Player 0 has been hit, health = ", player.health)
+                        # print("Player 0 has been hit, health = ", player.health)
                     elif wep == "raygun":
                         w.kill()
                         player.update_health(global_vars.raygun_damage)
-                        print("Player 0 has been hit, health = ", player.health)
+                        # print("Player 0 has been hit, health = ", player.health)
                     elif wep == "gun":
                         player.update_health(global_vars.gun_damage)
-                        print("Player 0 has been hit, health = ", player.health)
+                        # print("Player 0 has been hit, health = ", player.health)
                         w.kill()
 
     while running:
@@ -202,6 +204,8 @@ def main():
             weapons_shot[w].draw(screen)
         for w in weapons_shot:
             weapons1_shot[w].draw(screen)
+        health_bar.draw(screen)
+        health_bar1.draw(screen)
 
 
         #Updates shit 
