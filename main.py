@@ -51,7 +51,7 @@ def main():
                     p.can_shoot = False
                 else:
                     p.can_shoot = True
-            if w == "raygun":
+            elif w == "raygun":
                 raycount = 0
                 for ray in weapons_shot["raygun"]:
                     if ray.flying:
@@ -60,6 +60,11 @@ def main():
                     p.can_shoot = True
                 else:
                     p.can_shoot = False
+            elif w == "gun":
+                if time_since_shot < 60:
+                    p.can_shoot = False
+                else:
+                    p.can_shoot = True
 
         if p == player1:
             if w == "swords":
@@ -71,7 +76,7 @@ def main():
                     p.can_shoot = False
                 else:
                     p.can_shoot = True
-            if w == "raygun":
+            elif w == "raygun":
                 raycount = 0
                 for ray in weapons1_shot["raygun"]:
                     if ray.flying:
@@ -80,6 +85,11 @@ def main():
                     p.can_shoot = True
                 else:
                     p.can_shoot = False
+            elif w == "gun":
+                if time_since_shot1 < 60:
+                    p.can_shoot = False
+                else:
+                    p.can_shoot = True
 
 
     def shootWeapons(p): #shoots the player
@@ -91,6 +101,9 @@ def main():
                     weapons_shot["swords"].add(sprites.sword.Sword(player, 0))
                 elif weapon == "raygun":
                     weapons_shot["raygun"].add(Ray(player, 0))
+                elif weapon == "gun":
+                    time_since_shot = 0
+                    weapons_shot["gun"].add(sprites.gun.Bullet(player, 0))
         if p == player1:
             if input_status1["is_shooting"] and p.can_shoot:
                 if weapon1 == "swords":
@@ -98,6 +111,9 @@ def main():
                     weapons1_shot["swords"].add(sprites.sword.Sword(player1, 1))
                 elif weapon1 == "raygun":
                     weapons1_shot["raygun"].add(Ray(player1, 1))
+                elif weapon1 == "gun":
+                    time_since_shot1 = 0
+                    weapons1_shot["gun"].add(sprites.gun.Bullet(player1, 1))
 
     def update_weapons(p):
         pass
@@ -112,20 +128,7 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    input_status1["weapon_swap"] = True
-                if event.key == pygame.K_a:
-                    input_status["weapon_swap"] = True
         #inputs and shit
-        ''' 
-        if input_status["weapon_swap"] == True:
-            player.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
-            weapon = weapon_list[(weapon_list.index(weapon)+1)%len(weapon_list)]
-        if input_status1["weapon_swap"] == True:
-            player1.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
-            weapon1 = weapon_list[(weapon_list.index(weapon1)+1)%len(weapon_list)]
-        '''
         if player.swap_weapon:
             player.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
             #weapon = weapon_list[(weapon_list.index(weapon)+1)%len(weapon_list)]

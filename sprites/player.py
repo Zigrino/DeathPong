@@ -20,7 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = 5
         self.is_shooting = False
         self.swap_weapon = False
-        self.time_to_swap = random.randint(3, 8)
+        self.time_to_swap = random.randint(3, 12)
         self.time_since_swapped = 0
         self.last_time_swapped = time.time()
         self.can_shoot = False
