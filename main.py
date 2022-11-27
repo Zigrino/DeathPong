@@ -38,8 +38,8 @@ def main():
     running = True
     weapon = random.choice(weapon_list)
     weapon1 = random.choice(weapon_list)
-    time_since_shot = 0
-    time_since_shot1 = 0
+    time_since_shot = 10000
+    time_since_shot1 = 10000
     health_bar = sprites.health_bar.Health_Bar(player, 0)
     health_bar1 = sprites.health_bar.Health_Bar(player1, 1)
     def weaponHandler(w, p): #decides if player can shoot
@@ -166,7 +166,7 @@ def main():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
+                if event.key == pygame.K_ESCAPE or event.key == pygame.K_r:
                     main()
         #inputs and shit
         if player.swap_weapon:
