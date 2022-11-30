@@ -2,7 +2,7 @@ import pygame
 import global_vars
 import sys
 import inputs
-import sprites.player, sprites.sword, sprites.gun, sprites.health_bar
+import sprites.player, sprites.sword, sprites.gun, sprites.health_bar, sprites.gameOver
 from sprites.ray_gun import Ray_Gun, Ray
 import random
 
@@ -46,6 +46,7 @@ def main():
     time_since_shot1 = 10000
     health_bar = sprites.health_bar.Health_Bar(player, 0)
     health_bar1 = sprites.health_bar.Health_Bar(player1, 1)
+    gameover = sprites.gameOver.GameOver()
     def weaponHandler(w, p): #decides if player can shoot
         if p == player:
             if w == "swords":
@@ -226,6 +227,13 @@ def main():
 
         collisions()
 
+
+        #Gameover shit
+        if not player.alive:
+            gameover.updateWinner(2)
+        if not player1.alive:
+            gameover.updateWinner(1)
+
         #drawing shit
         screen.fill(global_vars.SCREEN_COLOR)
         if player.alive:
@@ -240,6 +248,7 @@ def main():
             weapons1_shot[w].draw(screen)
         health_bar.draw(screen)
         health_bar1.draw(screen)
+        gameover.draw(screen)
 
 
         #Updates shit 
