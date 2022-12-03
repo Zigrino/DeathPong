@@ -4,9 +4,11 @@ import sys
 import inputs
 import sprites.player, sprites.sword, sprites.gun, sprites.health_bar, sprites.gameOver
 from sprites.ray_gun import Ray_Gun, Ray
+import pygame.mixer as mixer
 import random
 
 pygame.init()
+mixer.init()
 WIDTH = global_vars.window_dimensions[0]
 HEIGHT = global_vars.window_dimensions[1]
 clock = pygame.time.Clock()
@@ -19,6 +21,7 @@ def main():
     player1 = sprites.player.Player((WIDTH, HEIGHT/2), 1)
     input_status = {}
     weapon_list = ["swords", "raygun", "gun", "machine_gun"]
+    sounds = {"swords": mixer.Sound(r"assets/sounds/sword.wav"), "raygun": mixer.Sound(r"assets/sounds/raygun.wav"), "gun": mixer.Sound(r"assets/sounds/gun.mp3"), "machine_gun": mixer.Sound(r"assets/sounds/machine_gun.mp3")}
     weapons_shot = {}
     weapons_shot["swords"] = pygame.sprite.Group()
     weapons_shot["raygun"] = pygame.sprite.Group()
@@ -127,26 +130,42 @@ def main():
             if input_status["is_shooting"] and p.can_shoot:
                 if weapon == "swords":
                     time_since_shot = 0
+                    sounds[weapon].stop()
+                    sounds["swords"].play()
                     weapons_shot["swords"].add(sprites.sword.Sword(player, 0))
                 elif weapon == "raygun":
+                    #sounds[weapon].stop()
+                    sounds["raygun"].play()
                     weapons_shot["raygun"].add(Ray(player, 0))
                 elif weapon == "gun":
+                    sounds[weapon].stop()
+                    sounds["gun"].play()
                     time_since_shot = 0
                     weapons_shot["gun"].add(sprites.gun.Bullet(player, 0))
                 elif weapon == "machine_gun":
+                    sounds[weapon].stop()
+                    sounds["machine_gun"].play()
                     time_since_shot = 0
                     weapons_shot["machine_gun"].add(sprites.gun.Bullet(player, 0))
         if p == player1:
             if input_status1["is_shooting"] and p.can_shoot:
                 if weapon1 == "swords":
+                    sounds[weapon1].stop()
+                    sounds["swords"].play()
                     time_since_shot1 = 0
                     weapons1_shot["swords"].add(sprites.sword.Sword(player1, 1))
                 elif weapon1 == "raygun":
+                    #sounds[weapon1].stop()
+                    sounds["raygun"].play()
                     weapons1_shot["raygun"].add(Ray(player1, 1))
                 elif weapon1 == "gun":
+                    sounds[weapon1].stop()
+                    sounds["gun"].play()
                     time_since_shot1 = 0
                     weapons1_shot["gun"].add(sprites.gun.Bullet(player1, 1))
                 elif weapon1 == "machine_gun":
+                    sounds[weapon1].stop()
+                    sounds["machine_gun"].play()
                     time_since_shot1 = 0
                     weapons1_shot["machine_gun"].add(sprites.gun.Bullet(player1, 1))
 
