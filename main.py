@@ -21,7 +21,7 @@ def main():
     player1 = sprites.player.Player((WIDTH, HEIGHT/2), 1)
     input_status = {}
     weapon_list = ["swords", "raygun", "gun", "machine_gun"]
-    sounds = {"swords": mixer.Sound(r"assets/sounds/sword.wav"), "raygun": mixer.Sound(r"assets/sounds/raygun.wav"), "gun": mixer.Sound(r"assets/sounds/gun.mp3"), "machine_gun": mixer.Sound(r"assets/sounds/machine_gun.mp3")}
+    sounds = {"swords": mixer.Sound(r"assets/sounds/sword.wav"), "raygun": mixer.Sound(r"assets/sounds/raygun.wav"), "gun": mixer.Sound(r"assets/sounds/gun.mp3"), "machine_gun": mixer.Sound(r"assets/sounds/machine_gun.mp3"), "player_hit": mixer.Sound(r"assets/sounds/hit.wav"), "sword_hit": mixer.Sound(r"assets/sounds/sword_hit.mp3")}
     weapons_shot = {}
     weapons_shot["swords"] = pygame.sprite.Group()
     weapons_shot["raygun"] = pygame.sprite.Group()
@@ -174,38 +174,46 @@ def main():
             for w in weapons_shot[wep]:
                 if pygame.sprite.collide_mask(player1, w):
                     if wep == "swords" and w.can_kill:
+                        sounds["sword_hit"].play()
                         w.image = w.image_list[1]
                         w.can_kill = False
                         player1.update_health(global_vars.sword_damage)
                         # print("Player 1 has been hit, health = ", player1.health)
                     elif wep == "raygun":
+                        sounds["player_hit"].play()
                         w.kill()
                         player1.update_health(global_vars.raygun_damage)
                         # print("Player 1 has been hit, health = ", player1.health)
                     elif wep == "gun":
+                        sounds["player_hit"].play()
                         player1.update_health(global_vars.gun_damage)
                         # print("Player 1 has been hit, health = ", player1.health)
                         w.kill()
                     elif wep == "machine_gun":
+                        sounds["player_hit"].play()
                         player1.update_health(global_vars.machine_gun_damage) 
                         w.kill()
         for wep in weapons1_shot:
             for w in weapons1_shot[wep]:
                 if pygame.sprite.collide_mask(player, w):
                     if wep == "swords" and w.can_kill:
+                        sounds["sword_hit"].play()
                         w.image = w.image_list[1]
                         w.can_kill = False
                         player.update_health(global_vars.sword_damage)
                         # print("Player 0 has been hit, health = ", player.health)
                     elif wep == "raygun":
+                        sounds["player_hit"].play()
                         w.kill()
                         player.update_health(global_vars.raygun_damage)
                         # print("Player 0 has been hit, health = ", player.health)
                     elif wep == "gun":
+                        sounds["player_hit"].play()
                         player.update_health(global_vars.gun_damage)
                         # print("Player 0 has been hit, health = ", player.health)
                         w.kill()
                     elif wep == "machine_gun":
+                        sounds["player_hit"].play()
                         player.update_health(global_vars.machine_gun_damage) 
                         w.kill()
 
