@@ -21,7 +21,9 @@ def main():
     player1 = sprites.player.Player((WIDTH, HEIGHT/2), 1)
     input_status = {}
     weapon_list = ["swords", "raygun", "gun", "machine_gun"]
-    sounds = {"swords": mixer.Sound(r"assets/sounds/sword.wav"), "raygun": mixer.Sound(r"assets/sounds/raygun.wav"), "gun": mixer.Sound(r"assets/sounds/gun.mp3"), "machine_gun": mixer.Sound(r"assets/sounds/machine_gun.mp3"), "player_hit": mixer.Sound(r"assets/sounds/hit.wav"), "sword_hit": mixer.Sound(r"assets/sounds/sword_hit.mp3")}
+    ray_sound = mixer.Sound(r"assets/sounds/raygun.wav")
+    ray_sound.set_volume(30)
+    sounds = {"swords": mixer.Sound(r"assets/sounds/sword.wav"), "raygun": ray_sound, "gun": mixer.Sound(r"assets/sounds/gun.mp3"), "machine_gun": mixer.Sound(r"assets/sounds/machine_gun.mp3"), "player_hit": mixer.Sound(r"assets/sounds/hit.wav"), "sword_hit": mixer.Sound(r"assets/sounds/sword_hit.mp3")}
     weapons_shot = {}
     weapons_shot["swords"] = pygame.sprite.Group()
     weapons_shot["raygun"] = pygame.sprite.Group()
