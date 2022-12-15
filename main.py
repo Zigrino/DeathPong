@@ -267,13 +267,15 @@ def main():
         #inputs and shit
         if player.swap_weapon:
             player.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
+            time_since_shot = 100
             #weapon = weapon_list[(weapon_list.index(weapon)+1)%len(weapon_list)]
             new_list = weapon_list.copy()
             new_list.remove(weapon)
             weapon = random.choice(new_list)
             player.swap_weapon = False
         if player1.swap_weapon:
-            player1.can_shoot = True; #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
+            player1.can_shoot = True;
+            time_since_shot1 = 100 #sets can shoot to true to stop it from being stuck as false if sword is in the air dumbass
             new_list = weapon_list.copy()
             new_list.remove(weapon1)
             weapon1 = random.choice(new_list)

@@ -1,5 +1,6 @@
 import pygame, math, time
-
+import pygame.mixer
+pygame.mixer.init()
 class Launcher(pygame.sprite.Sprite):
     def __init__(self, player, pn):
         super().__init__()
@@ -57,14 +58,21 @@ class Rocket(pygame.sprite.Sprite):
        self.velocity = [0,0]
        self.progress = 0
        self.last_time = time.time()
+       self.position = self.rect.center
+       self.noise_played = False
+       self.noise = pygame.mixer.Sound(r"assets/sounds/explosion.wav")
    def draw(self, surface):
        surface.blit(self.image, self.rect)
 
 
    def update(self, player_y):
        #explosion
+       self.position = self.rect.center
        if self.progress < 6 and self.progress != 0:
            self.image = self.explosions[self.progress-1]
+           self.rect = self.image.get_rect(center = self.position)
+           if self.progress == 5:
+               self.dealing_damage = False
        elif self.progress >= 6:
            self.kill()
        if self.rect.right <= 800 and self.rect.left >= 0 and (not self.dealing_damage) and (not self.exploding):
@@ -89,6 +97,9 @@ class Rocket(pygame.sprite.Sprite):
 
         #self.progress or whatever the fuk emil is doing
        if self.exploding:
+            if not self.noise_played:
+                self.noise_played = True
+                self.noise.play()
             if (time.time() - self.last_time) >= (1.0/6.0):
                 self.progress += 1
                 self.last_time = time.time()
