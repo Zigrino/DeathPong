@@ -83,8 +83,6 @@ class Rocket(pygame.sprite.Sprite):
         
         #rotation
        if not self.exploding:
-            print(self.velocity)
             angle = (math.atan2(self.velocity[0], self.velocity[1]) * 180.0 / math.pi) + 270
-            print(angle)
             self.image = pygame.transform.rotate(self.base_image, angle)
             self.rect = self.image.get_rect(center = self.rect.center)
