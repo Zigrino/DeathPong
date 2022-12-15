@@ -217,6 +217,11 @@ def main():
                         sounds["player_hit"].play()
                         player1.update_health(global_vars.machine_gun_damage) 
                         w.kill()
+                    elif wep == "rocket":
+                        if w.dealing_damage:
+                            sounds["player_hit"].play()
+                            player1.update_health(global_vars.explosion_damage) 
+                            w.dealing_damage = False
         for wep in weapons1_shot:
             for w in weapons1_shot[wep]:
                 if pygame.sprite.collide_mask(player, w):
@@ -240,6 +245,11 @@ def main():
                         sounds["player_hit"].play()
                         player.update_health(global_vars.machine_gun_damage) 
                         w.kill()
+                    elif wep == "rocket":
+                        if w.dealing_damage:
+                            sounds["player_hit"].play()
+                            player.update_health(global_vars.explosion_damage) 
+                            w.dealing_damage = False
 
     while running:
         clock.tick(global_vars.FPS)

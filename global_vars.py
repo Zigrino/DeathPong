@@ -6,3 +6,4 @@ raygun_damage = 1
 gun_damage = 5
 machine_gun_damage = 2
 health = 40
+explosion_damage = 7

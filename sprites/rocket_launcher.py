@@ -1,4 +1,4 @@
-import pygame, math
+import pygame, math, time
 
 class Launcher(pygame.sprite.Sprite):
     def __init__(self, player, pn):
@@ -36,7 +36,8 @@ class Rocket(pygame.sprite.Sprite):
        self.player = player;
        self.image = pygame.image.load(r"assets/images/Rocket.png")
        self.base_image = pygame.image.load(r"assets/images/Rocket.png")
-       self.explosions = [pygame.image.load(r"assets/images/exp1_.png"), pygame.image.load(r"assets/images/exp2_.png"), pygame.image.load(r"assets/images/exp3_.png"), pygame.image.load(r"assets/images/exp4_.png"), pygame.image.load(r"assets/images/exp5_.png")]
+       self.rocket_scale = 2
+       self.explosions = [pygame.transform.scale(pygame.image.load(r"assets/images/exp1_.png"), (33*self.rocket_scale, 32*self.rocket_scale)), pygame.transform.scale(pygame.image.load(r"assets/images/exp2_.png"), (56*self.rocket_scale, 61*self.rocket_scale)), pygame.transform.scale(pygame.image.load(r"assets/images/exp3_.png"), (80*self.rocket_scale, 76*self.rocket_scale)), pygame.transform.scale(pygame.image.load(r"assets/images/exp4_.png"), (80*self.rocket_scale, 80*self.rocket_scale)), pygame.transform.scale(pygame.image.load(r"assets/images/exp5_.png"), (80*self.rocket_scale, 80*self.rocket_scale))]
        self.scale = 0.05
        self.image = pygame.transform.scale(self.image, (1172*self.scale, 384*self.scale))
        self.base_image = pygame.transform.scale(self.base_image, (1172*self.scale, 384*self.scale))
@@ -54,20 +55,26 @@ class Rocket(pygame.sprite.Sprite):
        self.exploding = False
        self.dealing_damage = False
        self.velocity = [0,0]
+       self.progress = 0
+       self.last_time = time.time()
    def draw(self, surface):
        surface.blit(self.image, self.rect)
 
 
    def update(self, player_y):
-       
-       if self.rect.right <= 800 and self.rect.left >= 0 and not self.dealing_damage:
+       #explosion
+       if self.progress < 6 and self.progress != 0:
+           self.image = self.explosions[self.progress-1]
+       elif self.progress >= 6:
+           self.kill()
+       if self.rect.right <= 800 and self.rect.left >= 0 and (not self.dealing_damage) and (not self.exploding):
            if self.pn == 0:
                self.rect.center =  (self.rect.center[0] + self.speed, self.rect.center[1])
                self.velocity[0] = self.speed #for rotation
            else:
                self.rect.center = (self.rect.center[0] - self.speed, self.rect.center[1])
                self.velocity[0] = -self.speed # for rotation
-       else:
+       elif (not self.dealing_damage) and (not self.exploding):
            self.exploding = True
            self.dealing_damage = True
 
@@ -80,7 +87,12 @@ class Rocket(pygame.sprite.Sprite):
        else:
            self.velocity[1] = 0
 
-        
+        #self.progress or whatever the fuk emil is doing
+       if self.exploding:
+            if (time.time() - self.last_time) >= (1.0/6.0):
+                self.progress += 1
+                self.last_time = time.time()
+
         #rotation
        if not self.exploding:
             angle = (math.atan2(self.velocity[0], self.velocity[1]) * 180.0 / math.pi) + 270
