@@ -2,7 +2,7 @@ import pygame
 import global_vars
 import sys
 import inputs
-import sprites.player, sprites.sword, sprites.gun, sprites.health_bar, sprites.gameOver
+import sprites.player, sprites.sword, sprites.gun, sprites.health_bar, sprites.gameOver, sprites.rocket_launcher
 from sprites.ray_gun import Ray_Gun, Ray
 import pygame.mixer as mixer
 import random
@@ -20,30 +20,32 @@ def main():
     player = sprites.player.Player((0, HEIGHT/2), 0)
     player1 = sprites.player.Player((WIDTH, HEIGHT/2), 1)
     input_status = {}
-    weapon_list = ["swords", "raygun", "gun", "machine_gun"]
-    ray_sound = mixer.Sound(r"assets/sounds/raygun.wav")
-    ray_sound.set_volume(30)
-    sounds = {"swords": mixer.Sound(r"assets/sounds/sword.wav"), "raygun": ray_sound, "gun": mixer.Sound(r"assets/sounds/gun.mp3"), "machine_gun": mixer.Sound(r"assets/sounds/machine_gun.mp3"), "player_hit": mixer.Sound(r"assets/sounds/hit.wav"), "sword_hit": mixer.Sound(r"assets/sounds/sword_hit.mp3")}
+    weapon_list = ["swords", "raygun", "gun", "machine_gun", "rocket"]
+    sounds = {"rocket": mixer.Sound(r"assets/sounds/rocket_fire.wav"), "swords": mixer.Sound(r"assets/sounds/sword.wav"), "raygun": mixer.Sound(r"assets/sounds/raygun.wav"), "gun": mixer.Sound(r"assets/sounds/gun.mp3"), "machine_gun": mixer.Sound(r"assets/sounds/machine_gun.mp3"), "player_hit": mixer.Sound(r"assets/sounds/hit.wav"), "sword_hit": mixer.Sound(r"assets/sounds/sword_hit.mp3")}
     weapons_shot = {}
     weapons_shot["swords"] = pygame.sprite.Group()
     weapons_shot["raygun"] = pygame.sprite.Group()
     weapons_shot["gun"] = pygame.sprite.Group()
     weapons_shot["machine_gun"] = pygame.sprite.Group()
+    weapons_shot["rocket"] = pygame.sprite.Group()
     weapons1_shot = {}
     weapons1_shot["swords"] = pygame.sprite.Group()
     weapons1_shot["raygun"] = pygame.sprite.Group()
     weapons1_shot["gun"] = pygame.sprite.Group()
     weapons1_shot["machine_gun"] = pygame.sprite.Group()
+    weapons1_shot["rocket"] = pygame.sprite.Group()
     weapons_held = {}
     weapons_held["raygun"] = Ray_Gun(player, 0)
     weapons_held["swords"] = sprites.sword.Sword_Held(player, 0)
     weapons_held["gun"] = sprites.gun.Gun(player, 0)
     weapons_held["machine_gun"] = sprites.gun.Machine_Gun(player, 0)
+    weapons_held["rocket"] = sprites.rocket_launcher.Launcher(player, 0)
     weapons1_held = {}
     weapons1_held["raygun"] = Ray_Gun(player1, 1)
     weapons1_held["swords"] = sprites.sword.Sword_Held(player1, 1)
     weapons1_held["gun"] = sprites.gun.Gun(player1, 1)
     weapons1_held["machine_gun"] = sprites.gun.Machine_Gun(player1, 1)
+    weapons1_held["rocket"] = sprites.rocket_launcher.Launcher(player1, 1)
     running = True
     weapon = random.choice(weapon_list)
     weapon1 = random.choice(weapon_list)
@@ -86,6 +88,11 @@ def main():
                     p.can_shoot = False
                 else:
                     p.can_shoot = True
+            elif w == "rocket":
+                if time_since_shot < 90:
+                    p.can_shoot = False
+                else:
+                    p.can_shoot = True
         if not player.alive:
             player.can_shoot = False
 
@@ -122,6 +129,11 @@ def main():
                     p.can_shoot = False
                 else:
                     p.can_shoot = True
+            elif w == "rocket":
+                if time_since_shot1 < 90:
+                    p.can_shoot = False
+                else:
+                    p.can_shoot = True
         if not player1.alive:
             player1.can_shoot = False
 
@@ -149,6 +161,11 @@ def main():
                     sounds["machine_gun"].play()
                     time_since_shot = 0
                     weapons_shot["machine_gun"].add(sprites.gun.Bullet(player, 0))
+                elif weapon == "rocket":
+                    sounds[weapon].stop()
+                    sounds["rocket"].play()
+                    time_since_shot = 0
+                    weapons_shot["rocket"].add(sprites.rocket_launcher.Rocket(player, 0))
         if p == player1:
             if input_status1["is_shooting"] and p.can_shoot:
                 if weapon1 == "swords":
@@ -170,6 +187,11 @@ def main():
                     sounds["machine_gun"].play()
                     time_since_shot1 = 0
                     weapons1_shot["machine_gun"].add(sprites.gun.Bullet(player1, 1))
+                elif weapon1 == "rocket":
+                    sounds[weapon1].stop()
+                    sounds["rocket"].play()
+                    time_since_shot1 = 0
+                    weapons1_shot["rocket"].add(sprites.rocket_launcher.Rocket(player1, 1))
 
     def collisions():
         for wep in weapons_shot:
@@ -289,9 +311,26 @@ def main():
             player1.update()
             weapons1_held[weapon1].update()
         for w in weapons_shot:
-            weapons_shot[w].update()
-        for w in weapons_shot:
-            weapons1_shot[w].update()
+            if w == "rocket":
+                weapons_shot[w].update(player1.rect.centery)
+            else:
+                weapons_shot[w].update()
+        for w in weapons1_shot:
+            if w == "rocket":
+                weapons1_shot[w].update(player.rect.centery)
+            else:
+                weapons1_shot[w].update()
+        
+        #Launcher update
+        if weapon == "rocket" and weapons_held["rocket"].is_full and time_since_shot < 90:
+            weapons_held["rocket"].is_full = False
+        elif weapon == "rocket" and (not weapons_held["rocket"].is_full) and time_since_shot >= 90:
+            weapons_held["rocket"].is_full = True
+        if weapon1 == "rocket" and weapons1_held["rocket"].is_full and time_since_shot1 < 90:
+            weapons1_held["rocket"].is_full = False
+        elif weapon1 == "rocket" and (not weapons1_held["rocket"].is_full) and time_since_shot1 >= 90:
+            weapons1_held["rocket"].is_full = True
+
 
 
 
