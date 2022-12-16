@@ -71,7 +71,7 @@ class Rocket(pygame.sprite.Sprite):
        if self.progress < 6 and self.progress != 0:
            self.image = self.explosions[self.progress-1]
            self.rect = self.image.get_rect(center = self.position)
-           if self.progress == 5:
+           if self.progress > 2:
                self.dealing_damage = False
        elif self.progress >= 6:
            self.kill()
